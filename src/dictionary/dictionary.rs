@@ -15,7 +15,7 @@ pub struct Dictionary<T> {
 
 impl<T: Hash + PartialEq + Clone + Debug> Dictionary<T> {
     /// Constructs a new empty dictionary of size 0 with the given initial capacity.
-    fn new(initial_capacity: u64) -> Dictionary<T> {
+    pub fn new(initial_capacity: u64) -> Dictionary<T> {
         Dictionary {
             capacity: initial_capacity,
             size: 0,
@@ -52,13 +52,12 @@ impl<T: Hash + PartialEq + Clone + Debug> Dictionary<T> {
     /// dictionary, it simply returns its position.
     ///
     /// # Example:
-    /// FIXME this code does not compile because the import but I don't know why
-    /// ```ignore
-    /// use dictionary::Dictionary;
+    /// ```
+    /// use rustling101::dictionary::dictionary::Dictionary;
     ///
     /// let mut dictionary = Dictionary::new(4);
-    /// assert_eq!(dictionary.map(5), 0);
-    /// assert_eq!(dictionary.map(5), 0);
+    /// assert_eq!(dictionary.map(&5), 0);
+    /// assert_eq!(dictionary.map(&5), 0);
     /// ```
     pub fn map(&mut self, key: &T) -> u64 {
         // Double the table size if 50% full
@@ -83,9 +82,7 @@ impl<T: Hash + PartialEq + Clone + Debug> Dictionary<T> {
             pos as u64
         } else {
             let new_address = self.size;
-            println!("setting key: {:?}, at address: {}", key, new_address);
             self.keys.push(key.clone());
-            println!("size of keys: {}", self.keys.len());
             self.hash_table[index as usize] = new_address as i64;
             self.size += 1;
             new_address
@@ -127,12 +124,12 @@ impl<T: Hash + PartialEq + Clone + Debug> Dictionary<T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::dictionary::{Dictionary, FREE_SLOT};
+    use crate::dictionary::dictionary::{Dictionary, FREE_SLOT};
     use std::fmt::{Debug, Formatter};
     use std::hash::{Hash, Hasher};
 
     #[test]
-    fn testInteger() {
+    fn test_integer() {
         let mut dictionary: Dictionary<i32> = Dictionary::new(4);
         assert_eq!(dictionary.map(&5), 0);
         assert_eq!(dictionary.map(&0), 1);
@@ -152,7 +149,7 @@ mod tests {
     }
 
     #[test]
-    fn testStruct() {
+    fn test_struct() {
         struct Point {
             x: i32,
             y: i32,
